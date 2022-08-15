@@ -20,11 +20,15 @@ export class BaseService<T extends Document> {
     return this._model.countDocuments(condition).exec();
   }
 
-  async getOne(value: any, queryBy = '_id') {
+  async getOneBy(value: any, queryBy = '_id') {
     const query = {};
     query[queryBy] = value;
 
     return this._model.findOne(query).populate(this._populateOnFind).exec();
+  }
+
+  async getOne(condition = {}) {
+    return this._model.findOne(condition).populate(this._populateOnFind).exec();
   }
 
   async createFromRequestBody(body: Partial<T>): Promise<T> {
