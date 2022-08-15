@@ -46,7 +46,8 @@ export class AuthService {
   }
 
   async login(user: User) {
-    const { _id, email, phone, firstName, lastName, status, role } = user;
+    const { _id, email, phone, firstName, lastName, status, role } =
+      user.toJSON();
 
     const payload = {
       _id,
@@ -67,7 +68,10 @@ export class AuthService {
   }
 
   /** LOGIN VALIDATION: EMAIL - GOOGLE - FACEBOOK */
-  async validateUser(identifier: string, password: string): Promise<any> {
+  async validateUser(
+    identifier: string,
+    password: string,
+  ): Promise<User | null> {
     const user = await this._userService.getOne({
       $or: [
         { email: identifier },
@@ -78,10 +82,8 @@ export class AuthService {
       ],
     });
 
-    if (user && (await this.comparePassword(user.password, password))) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, accounts, ...payload } = user;
-      return payload;
+    if (user && (await this.comparePassword(password, user.password))) {
+      return user;
     }
 
     return null;
@@ -184,8 +186,11 @@ export class AuthService {
     return hash(password, salt);
   }
 
-  async comparePassword(password: string, input: string): Promise<boolean> {
-    return compare(password, input);
+  async comparePassword(
+    password: string,
+    hashPassword: string,
+  ): Promise<boolean> {
+    return compare(password, hashPassword);
   }
 
   async signPayload(

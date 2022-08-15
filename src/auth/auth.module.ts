@@ -1,5 +1,6 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { UserModule } from '../user/user.module';
+import { AdminAuthController } from './admin-auth.controller';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import {
@@ -11,7 +12,7 @@ import {
 
 @Module({
   imports: [forwardRef(() => UserModule)],
-  controllers: [AuthController],
+  controllers: [AuthController, AdminAuthController],
   providers: [
     AuthService,
     LocalStrategy,
