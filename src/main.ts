@@ -7,6 +7,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ConfigVar } from './configs';
+import { UserService } from './user/user.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -29,6 +30,11 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  /** ========== SEED DATA ========== */
+  const userService = app.get(UserService);
+  await userService.createDefaultAdmin();
+  /** ========== SEED DATA ========== */
 
   const configService = app.get(ConfigService);
   const host = configService.get<string>(ConfigVar.HOST);

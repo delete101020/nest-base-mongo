@@ -2,7 +2,7 @@ import { compare, genSalt, hash } from 'bcryptjs';
 import { SignOptions, sign } from 'jsonwebtoken';
 import { Profile as FacebookProfile } from 'passport-facebook';
 import { Profile as GoogleProfile } from 'passport-google-oauth20';
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ConfigVar } from '../configs';
 import { Account, AccountProvider, User } from '../user/models';
@@ -24,6 +24,7 @@ export class AuthService {
 
   constructor(
     private _configService: ConfigService,
+    @Inject(forwardRef(() => UserService))
     private _userService: UserService,
   ) {
     this.jwtKeys = {
