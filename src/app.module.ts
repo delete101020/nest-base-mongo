@@ -11,6 +11,7 @@ import { TransformResponseInterceptor } from './common/interceptors';
 import { ConfigVar } from './configs';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './user/user.module';
+import { TodoModule } from './todo/todo.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { UserModule } from './user/user.module';
     SharedModule,
     AuthModule,
     UserModule,
+    TodoModule,
   ],
   controllers: [AppController],
   providers: [
