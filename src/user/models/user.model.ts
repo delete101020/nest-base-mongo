@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseModel } from '../../common/schema/base.model';
+import { BaseModel } from '../../common/schema';
 import { Account, AccountSchema, UserRole, UserStatus } from '.';
 
 export const USER_MODEL = 'User';
